@@ -17,7 +17,6 @@ function App() {
     } else {
       data.forEach((item) => {
         const filterStatus = item.filter((curElm) => curElm.status === status);
-        console.log(filterStatus);
         newData.push(filterStatus);
       });
       setMyData(newData);
