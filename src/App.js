@@ -1,23 +1,54 @@
-import logo from './logo.svg';
+import { useState, useEffect } from 'react';
+import { Table, Container, Accordion } from 'react-bootstrap';
+import data from './data';
+import Row from './Row';
 import './App.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
+  const [myData, setMyData] = useState([]);
+
+  useEffect(() => {
+    let status = 'all'; // processed ,Executing,Failed,all
+    let newData = [];
+
+    if (status === 'all') {
+      setMyData(data);
+    } else {
+      data.forEach((item) => {
+        const filterStatus = item.filter((curElm) => curElm.status === status);
+        console.log(filterStatus);
+        newData.push(filterStatus);
+      });
+      setMyData(newData);
+    }
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="main">
+      <Container>
+        <Table bordered hover>
+          <thead>
+            <tr>
+              <th>Id</th>
+              <th>Run Id</th>
+              <th>Run Name</th>
+              <th>Job Id</th>
+              <th>Status</th>
+              <th>Create Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            {myData.map((item, index) => {
+              return (
+                <>
+                  <Row item={item} />
+                </>
+              );
+            })}
+          </tbody>
+        </Table>
+      </Container>
     </div>
   );
 }
